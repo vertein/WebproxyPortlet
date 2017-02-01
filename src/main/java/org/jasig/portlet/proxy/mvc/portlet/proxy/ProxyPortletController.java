@@ -171,14 +171,16 @@ public class ProxyPortletController {
 
           // retrieve the HTML content
           proxyResponse = contentService.getContent(proxyRequest, request);
+          log.debug("Check to see if proxy response is good");
 
           // TODO: this probably can only be an HTTP content type
           if (proxyResponse instanceof HttpContentResponseImpl) {
-
+              log.debug("Proxy response is instance of httpcontentresponseimpl");
             // Determine the content type of the proxied response.  If this is
             // not an HTML type, we need to construct a resource URL instead
             final HttpContentResponseImpl httpContentResponse = (HttpContentResponseImpl) proxyResponse;
             final String responseContentType = httpContentResponse.getHeaders().get("Content-Type");
+            log.debug("Proxy response content type is "+responseContentType);
             for (Pattern contentType : knownHtmlContentTypes) {
                 if (responseContentType != null && contentType.matcher(responseContentType).matches()) {
                     final Map<String, String[]> params = request.getParameterMap();
@@ -187,7 +189,9 @@ public class ProxyPortletController {
                 }
             }
 
-          }
+          }else{
+                            log.debug("Proxy response is not instance of httpcontentresponseimpl");
+                         }
 
           // if this is not an HTML content type, use the corresponding resource
           // URL in the session

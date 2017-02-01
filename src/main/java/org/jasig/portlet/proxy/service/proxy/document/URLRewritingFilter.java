@@ -104,7 +104,7 @@ public class URLRewritingFilter implements IDocumentFilter {
 
     protected void updateUrls(final Document document, final IContentResponse proxyResponse, final Map<String, Set<String>> elementSet,
             final RenderRequest request, final RenderResponse response, boolean action) {
-
+        LOG.debug("Going to update some urls");
         // attempt to retrieve the list of rewritten URLs from the session
         final PortletSession session = request.getPortletSession();
         ConcurrentMap<String, String> rewrittenUrls;
