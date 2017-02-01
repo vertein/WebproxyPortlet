@@ -198,6 +198,7 @@ public class ProxyPortletController {
           final PortletSession session = request.getPortletSession();
           @SuppressWarnings("unchecked")
           final ConcurrentMap<String,String> rewrittenUrls = (ConcurrentMap<String,String>) session.getAttribute(URLRewritingFilter.REWRITTEN_URLS_KEY);
+          log.debug("Going to redirect with : "+rewrittenUrls.get(url));
           response.sendRedirect(rewrittenUrls.get(url));
         } finally {
             if (proxyResponse != null) {
