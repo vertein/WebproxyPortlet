@@ -187,11 +187,12 @@ public class URLRewritingFilter implements IDocumentFilter {
                     // if this URL matches our whitelist regex, rewrite it 
                     // to pass through this portlet
                     for (String regex : whitelistRegexes) {
-
+                        LOG.debug("Going through regex {}", regex);
                         if (StringUtils.isNotBlank(regex)) {
                           final Pattern pattern = Pattern.compile(regex);  // TODO share compiled regexes
+                          LOG.debug("Attribute url testing: {}", attributeUrl); 
                           if (pattern.matcher(attributeUrl).find()) {
-
+                              LOG.debug("Pattern matched");
                               // record that we've rewritten this URL
                               LOG.debug("Good old urls: "+attributeUrl);
                               rewrittenUrls.put(attributeUrl, attributeUrl);
@@ -217,6 +218,8 @@ public class URLRewritingFilter implements IDocumentFilter {
                               else {
                                   attributeUrl = createResourceUrl(response, attributeUrl);
                               }
+                          }else{
+                              LOG.debug("Pattern Did not match");
                           }
                         }
                     }
