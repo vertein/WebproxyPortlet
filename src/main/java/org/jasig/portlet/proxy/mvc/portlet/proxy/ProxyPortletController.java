@@ -32,6 +32,7 @@ import javax.portlet.ActionResponse;
 import javax.portlet.EventRequest;
 import javax.portlet.EventResponse;
 import javax.portlet.MimeResponse;
+import javax.portlet.PortletConfig;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
@@ -40,7 +41,11 @@ import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.portlet.ResourceURL;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.IOUtils;
 import org.jasig.portal.search.SearchConstants;
@@ -158,6 +163,8 @@ public class ProxyPortletController {
                             final ActionResponse response) throws IOException {
 
         IContentResponse proxyResponse = null;
+        
+        
 
         try {
           // locate the content service to use to retrieve our HTML content
@@ -175,7 +182,7 @@ public class ProxyPortletController {
           // retrieve the HTML content
           proxyResponse = contentService.getContent(proxyRequest, request);
           log.debug("Check to see if proxy response is good");
-
+          
           // TODO: this probably can only be an HTTP content type
           if (proxyResponse instanceof HttpContentResponseImpl) {
               log.debug("Proxy response is instance of httpcontentresponseimpl");
@@ -204,9 +211,12 @@ public class ProxyPortletController {
           final ConcurrentMap<String,String> rewrittenUrls = (ConcurrentMap<String,String>) session.getAttribute(URLRewritingFilter.REWRITTEN_URLS_KEY);
           log.debug("Going to redirect with : "+rewrittenUrls.get(url));
           //return;
-          final ResourceURL resourceUrl = ((MimeResponse) response).createResourceURL();
-          resourceUrl.setParameter(HttpContentServiceImpl.URL_PARAM, rewrittenUrls.get(url));
-          response.sendRedirect(resourceUrl.toString());
+          HttpServletRequest httpServletRequest = (HttpServletRequest) request.getAttribute("javax.servlet.request");
+          RequestDispatcher rd = httpServletRequest.getRequestDispatcher(rewrittenUrls.get(url));
+          rd.forward(httpServletRequest, (ServletResponse) response);
+        } catch (ServletException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         } finally {
             if (proxyResponse != null) {
                 proxyResponse.close();
