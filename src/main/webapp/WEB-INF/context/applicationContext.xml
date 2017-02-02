@@ -65,6 +65,7 @@
     </util:map>
 
     <util:map id="urlRewritingResourceElements">
+        <entry key="a"><set><value>href</value></set></entry>
         <entry key="link"><set><value>href</value></set></entry>
         <entry key="img">
             <set>
