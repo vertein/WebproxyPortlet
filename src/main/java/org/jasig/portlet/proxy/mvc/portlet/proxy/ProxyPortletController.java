@@ -31,6 +31,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.EventRequest;
 import javax.portlet.EventResponse;
+import javax.portlet.MimeResponse;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
@@ -38,6 +39,7 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
+import javax.portlet.ResourceURL;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
@@ -50,6 +52,7 @@ import org.jasig.portlet.proxy.service.IContentService;
 import org.jasig.portlet.proxy.service.proxy.document.IDocumentFilter;
 import org.jasig.portlet.proxy.service.proxy.document.URLRewritingFilter;
 import org.jasig.portlet.proxy.service.web.HttpContentResponseImpl;
+import org.jasig.portlet.proxy.service.web.HttpContentServiceImpl;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
@@ -201,7 +204,9 @@ public class ProxyPortletController {
           final ConcurrentMap<String,String> rewrittenUrls = (ConcurrentMap<String,String>) session.getAttribute(URLRewritingFilter.REWRITTEN_URLS_KEY);
           log.debug("Going to redirect with : "+rewrittenUrls.get(url));
           //return;
-          response.sendRedirect("https://test.my.wisc.edu/portal/p/doit-consolidated-billing-invoice/max/resource.uP?pP_proxy.url=http%3A%2F%2Fcypportprd.pri.doit.wisc.edu%2Fcypress%2Fload_page_pdf.asp%3FUDDS_str%3DA067150%26docType%3D1%26udds_trunc_int%3D7%26dbase%3DOMS2%26ddoc_id%3D23822588%26page_no%3D1%26pages%3D1");
+          final ResourceURL resourceUrl = ((MimeResponse) response).createResourceURL();
+          resourceUrl.setParameter(HttpContentServiceImpl.URL_PARAM, rewrittenUrls.get(url));
+          response.sendRedirect(resourceUrl.toString());
         } finally {
             if (proxyResponse != null) {
                 proxyResponse.close();
