@@ -219,7 +219,7 @@ public class ProxyPortletController {
 //                  request.getPortletSession().getPortletContext().getRequestDispatcher(rewrittenUrls.get(url));
 //          
 //          prd.forward(request, response);
-          response.sendRedirect("/test?tim=here");
+          response.sendRedirect(request.getContextPath() + "/resource.up?"+rewrittenUrls.get(url));
         } finally {
             if (proxyResponse != null) {
                 proxyResponse.close();
