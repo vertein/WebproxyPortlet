@@ -202,7 +202,6 @@ public class ProxyPortletController {
                 }
             }
             
-
           }else{
                             log.debug("Proxy response is not instance of httpcontentresponseimpl");
                          }
@@ -215,13 +214,11 @@ public class ProxyPortletController {
           log.debug("Going to redirect with : "+rewrittenUrls.get(url));
           //return;
        
-          PortletRequestDispatcher prd = 
-                  request.getPortletSession().getPortletContext().getRequestDispatcher(rewrittenUrls.get(url));
-          
-          prd.forward(request, response);
-        } catch (PortletException e) {
-            log.error("Unable to use {} as a resource url", url);
-            e.printStackTrace();
+//          PortletRequestDispatcher prd = 
+//                  request.getPortletSession().getPortletContext().getRequestDispatcher(rewrittenUrls.get(url));
+//          
+//          prd.forward(request, response);
+          response.sendRedirect(rewrittenUrls.get(url), "proxy.url");
         } finally {
             if (proxyResponse != null) {
                 proxyResponse.close();

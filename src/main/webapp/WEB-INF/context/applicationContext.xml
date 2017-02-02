@@ -49,7 +49,6 @@
     
     <util:list id="knownHtmlContentTypes">
         <value>.*text/html.*</value>
-        <value>.*application/pdf.*</value>
     </util:list>
 
     <util:map id="urlRewritingActionElements">
