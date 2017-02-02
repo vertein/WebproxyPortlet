@@ -192,8 +192,10 @@ public class URLRewritingFilter implements IDocumentFilter {
                           final Pattern pattern = Pattern.compile(regex);  // TODO share compiled regexes
                           if (pattern.matcher(attributeUrl).find()) {
 
-                              
-                              String proxyUrl = attributeUrl;
+                              // record that we've rewritten this URL
+                              LOG.debug("Good old urls: "+attributeUrl);
+                              rewrittenUrls.put(attributeUrl, attributeUrl);
+
                               // TODO: the value in the rewritten URLs map needs to 
                               // be a resource URL.  we also want to key URLs by a short
                               // string rather than the full URL
@@ -215,9 +217,6 @@ public class URLRewritingFilter implements IDocumentFilter {
                               else {
                                   attributeUrl = createResourceUrl(response, attributeUrl);
                               }
-                            LOG.debug("Going to put attributeUrl in map: "+attributeUrl.toString());
-                            // record that we've rewritten this URL
-                            rewrittenUrls.put(proxyUrl, attributeUrl);
                           }
                         }
                     }
