@@ -195,6 +195,7 @@ public class ProxyPortletController {
             log.debug("Proxy response content type is "+responseContentType);
             for (Pattern contentType : knownHtmlContentTypes) {
                 if (responseContentType != null && contentType.matcher(responseContentType).matches()) {
+                    log.debug("We got a match on {}", responseContentType);
                     final Map<String, String[]> params = request.getParameterMap();
                     response.setRenderParameters(params);
                     return;
@@ -213,8 +214,10 @@ public class ProxyPortletController {
           final ConcurrentMap<String,String> rewrittenUrls = (ConcurrentMap<String,String>) session.getAttribute(URLRewritingFilter.REWRITTEN_URLS_KEY);
           log.debug("Going to redirect with : "+rewrittenUrls.get(url));
           //return;
+       
           PortletRequestDispatcher prd = 
                   request.getPortletSession().getPortletContext().getRequestDispatcher(rewrittenUrls.get(url));
+          
           prd.forward(request, response);
         } catch (PortletException e) {
             log.error("Unable to use {} as a resource url", url);
