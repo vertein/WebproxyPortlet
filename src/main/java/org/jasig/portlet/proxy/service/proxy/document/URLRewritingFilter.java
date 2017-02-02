@@ -20,6 +20,7 @@ package org.jasig.portlet.proxy.service.proxy.document;
 
 import java.net.URISyntaxException;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -195,8 +196,8 @@ public class URLRewritingFilter implements IDocumentFilter {
                               LOG.debug("Pattern matched");
                               // record that we've rewritten this URL
                               LOG.debug("Good old urls: "+attributeUrl);
-                              rewrittenUrls.put(attributeUrl, attributeUrl);
-
+                              
+                              String proxyUrl = attributeUrl;
                               // TODO: the value in the rewritten URLs map needs to 
                               // be a resource URL.  we also want to key URLs by a short
                               // string rather than the full URL
@@ -218,10 +219,16 @@ public class URLRewritingFilter implements IDocumentFilter {
                               else {
                                   attributeUrl = createResourceUrl(response, attributeUrl);
                               }
+                              rewrittenUrls.put(proxyUrl, attributeUrl);
+                     
                           }else{
                               LOG.debug("Pattern Did not match");
                           }
                         }
+                    }
+                    LOG.debug("At the end we have a map for action " + action);
+                    for(Entry<String, String> entry : rewrittenUrls.entrySet()){
+                        LOG.debug("Entry is key: "+entry.getKey()+" and value "+entry.getValue());
                     }
 
                     element.attr(attributeName, attributeUrl.replace("&amp;", "&"));

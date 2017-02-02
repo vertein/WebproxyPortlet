@@ -212,14 +212,14 @@ public class ProxyPortletController {
           final PortletSession session = request.getPortletSession();
           @SuppressWarnings("unchecked")
           final ConcurrentMap<String,String> rewrittenUrls = (ConcurrentMap<String,String>) session.getAttribute(URLRewritingFilter.REWRITTEN_URLS_KEY);
-          log.debug("Going to redirect with : "+rewrittenUrls.get(url));
+          log.debug("Going to redirect with : "+rewrittenUrls.get(url)+" derived off of url "+url);
           //return;
        
 //          PortletRequestDispatcher prd = 
 //                  request.getPortletSession().getPortletContext().getRequestDispatcher(rewrittenUrls.get(url));
 //          
 //          prd.forward(request, response);
-          response.sendRedirect(request.getContextPath() + "/resource.up?"+rewrittenUrls.get(url));
+          response.sendRedirect(rewrittenUrls.get(url));
         } finally {
             if (proxyResponse != null) {
                 proxyResponse.close();
