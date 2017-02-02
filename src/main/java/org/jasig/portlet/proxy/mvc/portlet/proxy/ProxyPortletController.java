@@ -188,6 +188,7 @@ public class ProxyPortletController {
                     return;
                 }
             }
+            
 
           }else{
                             log.debug("Proxy response is not instance of httpcontentresponseimpl");

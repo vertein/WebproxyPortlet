@@ -191,7 +191,7 @@ public class URLRewritingFilter implements IDocumentFilter {
                         if (StringUtils.isNotBlank(regex)) {
                           final Pattern pattern = Pattern.compile(regex);  // TODO share compiled regexes
                           if (pattern.matcher(attributeUrl).find()) {
-                              String proxyUrl = attributeUrl;
+
                               
 
                               // TODO: the value in the rewritten URLs map needs to 
@@ -217,7 +217,7 @@ public class URLRewritingFilter implements IDocumentFilter {
                               }
                             LOG.debug("Going to put attributeUrl in map: "+attributeUrl.toString());
                             // record that we've rewritten this URL
-                            rewrittenUrls.put(proxyUrl, attributeUrl);
+                            rewrittenUrls.put(attributeUrl, attributeUrl);
                           }
                         }
                     }
