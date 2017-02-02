@@ -202,6 +202,7 @@ public class ProxyPortletController {
                 }
             }
             
+            
           }else{
                             log.debug("Proxy response is not instance of httpcontentresponseimpl");
                          }
@@ -218,7 +219,7 @@ public class ProxyPortletController {
 //                  request.getPortletSession().getPortletContext().getRequestDispatcher(rewrittenUrls.get(url));
 //          
 //          prd.forward(request, response);
-          response.sendRedirect(rewrittenUrls.get(url), "proxy.url");
+          response.sendRedirect("/test?tim=here");
         } finally {
             if (proxyResponse != null) {
                 proxyResponse.close();
