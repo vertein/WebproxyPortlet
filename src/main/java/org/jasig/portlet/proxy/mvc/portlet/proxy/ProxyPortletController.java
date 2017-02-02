@@ -201,7 +201,7 @@ public class ProxyPortletController {
           final ConcurrentMap<String,String> rewrittenUrls = (ConcurrentMap<String,String>) session.getAttribute(URLRewritingFilter.REWRITTEN_URLS_KEY);
           log.debug("Going to redirect with : "+rewrittenUrls.get(url));
           //return;
-          response.sendRedirect(rewrittenUrls.get(url));
+          response.sendRedirect("https://test.my.wisc.edu/portal/p/doit-consolidated-billing-invoice/max/resource.uP?pP_proxy.url=http%3A%2F%2Fcypportprd.pri.doit.wisc.edu%2Fcypress%2Fload_page_pdf.asp%3FUDDS_str%3DA067150%26docType%3D1%26udds_trunc_int%3D7%26dbase%3DOMS2%26ddoc_id%3D23822588%26page_no%3D1%26pages%3D1");
         } finally {
             if (proxyResponse != null) {
                 proxyResponse.close();
