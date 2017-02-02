@@ -33,8 +33,10 @@ import javax.portlet.EventRequest;
 import javax.portlet.EventResponse;
 import javax.portlet.MimeResponse;
 import javax.portlet.PortletConfig;
+import javax.portlet.PortletException;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
+import javax.portlet.PortletRequestDispatcher;
 import javax.portlet.PortletSession;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -211,11 +213,11 @@ public class ProxyPortletController {
           final ConcurrentMap<String,String> rewrittenUrls = (ConcurrentMap<String,String>) session.getAttribute(URLRewritingFilter.REWRITTEN_URLS_KEY);
           log.debug("Going to redirect with : "+rewrittenUrls.get(url));
           //return;
-          HttpServletRequest httpServletRequest = (HttpServletRequest) request.getAttribute("javax.servlet.request");
-          RequestDispatcher rd = httpServletRequest.getRequestDispatcher(rewrittenUrls.get(url));
-          rd.forward(httpServletRequest, (ServletResponse) response);
-        } catch (ServletException e) {
-            // TODO Auto-generated catch block
+          PortletRequestDispatcher prd = 
+                  request.getPortletSession().getPortletContext().getRequestDispatcher(rewrittenUrls.get(url));
+          prd.forward(request, response);
+        } catch (PortletException e) {
+            log.error("Unable to use {} as a resource url", url);
             e.printStackTrace();
         } finally {
             if (proxyResponse != null) {
